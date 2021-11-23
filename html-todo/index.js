@@ -56,7 +56,8 @@ function addItem(title, body, tagArr) {
   // < mkae tag lists 함수화>
   const itemTagLists = classToList(tagArr);
 
-  li.className = ['item', ...tagArr].join(' ');
+  // !!!!!!!! make hide class !!!!!!!!!
+  li.className = ['item', 'hide', ...tagArr].join(' ');
   li.innerHTML = `
 		<p class="task__title">${title}</p>
 		<ul class="tag__lists item__tag">
@@ -67,6 +68,7 @@ function addItem(title, body, tagArr) {
   const ul = document.getElementById('item__lists');
   ul.appendChild(li);
 }
+
 function registData(title, body, tagArr) {
   // id generate...
   const id = 'uuid' + `${Math.trunc(Math.random() * 1000)}`;
@@ -80,6 +82,8 @@ function registData(title, body, tagArr) {
 
 /**
  * Add button
+ * 1. click : update to data
+ * 2. display: on DOM
  */
 const addBtn = document.querySelector('.add__button');
 addBtn.addEventListener('click', (e) => {
@@ -88,8 +92,8 @@ addBtn.addEventListener('click', (e) => {
   const body = document.querySelector('#input__task').value;
   const tag = document.querySelector('#input__tag').value;
   const tagArr = tagToClass(tag);
-  console.log(e);
-  console.log(title, body, tagArr);
+  // console.log(e);
+  // console.log(title, body, tagArr);
   addItem(title, body, tagArr);
   registData(title, body, tagArr);
 
@@ -97,11 +101,14 @@ addBtn.addEventListener('click', (e) => {
   document.querySelector('#input__title').value = '';
   document.querySelector('#input__task').value = '';
   document.querySelector('#input__tag').value = '';
+
+  showingUpdate();
   return;
 });
 
 /**
- * Add data
+ * Add data : 저장된 data를 DOM으로 가져옴
+ * fetching에 가깝다.
  */
 function addingData() {
   data.items.map((item) => {
@@ -121,33 +128,32 @@ addingData();
  * A1. event.target 설정 구체적으로
  * P2. chooseTagArr 가 empty가 되면 error.
  */
-const chooseTagArr = [];
-document.addEventListener('click', (e) => {
-  console.log(e.target.className);
-  if (e.target.className.includes('tag__btn') === false) {
-    return;
-  }
-  // 원본 배열 안에서 off 하기. unmount
-  if (chooseTagArr.includes(e.target.id) === true) {
-    console.log(e.target.id);
-    chooseTagArr.splice(chooseTagArr.indexOf(e.target.id), 1);
-    console.log('Tag off');
-  } else if (chooseTagArr.includes(e.target.id) === false) {
-    chooseTagArr.push(e.target.id);
-    console.log('push');
-  }
+const chooseTagArr = ['neverKnowFirstTaghaha'];
 
-  console.log(chooseTagArr);
-  // reset
-  classNameReset('high__light');
-  // set
-  changeTagOn(chooseTagArr);
-  return;
-});
+// [!] first case: 어떻게 하면 없앨 수 있을까? => state 이용.
+if (chooseTagArr.length < 2) {
+  showingAll();
+}
 
-// reset
+// [!] showing update
+function showingUpdate() {
+  if (chooseTagArr.length < 2) {
+    showingAll();
+    classNameReset('high__light');
+  } else if (chooseTagArr.length >= 2) {
+    // console.log(chooseTagArr);
+    // reset
+    hidingAll();
+    classNameReset('high__light');
+    // set
+    changeTagOn(chooseTagArr);
+    showTagOn(chooseTagArr);
+  }
+}
+
+// [!] reset
 function classNameReset(cn) {
-  console.log(cn);
+  // console.log(cn);
   const classNameforReset = document.querySelectorAll(`.${cn}`);
   classNameforReset.forEach((el) => {
     el.classList.remove(cn);
@@ -155,13 +161,67 @@ function classNameReset(cn) {
   return;
 }
 
-// set : 색이 바뀌는 것 연출
-function changeTagOn(tagArr) {
-  const itemLi = document.querySelectorAll('.javascript');
-  const tags = document.querySelectorAll(tagArr.map((item) => `#${item}`));
-  console.log(itemLi);
-  console.log(tags);
-  // Node list => foreach 사용
-  tags.forEach((item) => item.classList.add('high__light'));
+function hidingAll() {
+  const addHideClass = document.querySelectorAll('.item');
+  console.log('hide', addHideClass);
+  addHideClass.forEach((item) => {
+    item.classList.remove('show');
+    item.classList.add('hide');
+  });
   return;
 }
+
+function showingAll() {
+  const addHideClass = document.querySelectorAll('.item');
+  console.log('hide', addHideClass);
+  addHideClass.forEach((item) => {
+    item.classList.remove('hide');
+    item.classList.add('show');
+  });
+  return;
+}
+
+// [!] set : 색이 바뀌는 것 연출
+function showTagOn(tagArr) {
+  const taggingList = document.querySelectorAll(
+    tagArr.map((item) => `.${item}`)
+  );
+  taggingList.forEach((item) => {
+    item.classList.remove('hide');
+    item.classList.add('show');
+  });
+}
+function changeTagOn(tagArr) {
+  // const taggingList = document.querySelectorAll(
+  //   tagArr.map((item) => `.${item}`)
+  // );
+
+  const tags = document.querySelectorAll(tagArr.map((item) => `#${item}`));
+  // Node list => foreach 사용
+  tags.forEach((item) => item.classList.add('high__light'));
+  // taggingList.forEach((item) => {
+  //   item.classList.remove('hide');
+  //   item.classList.add('show');
+  // });
+  return;
+}
+
+document.addEventListener('click', (e) => {
+  // console.log(e.target.className);
+  if (e.target.className.includes('tag__btn') === false) {
+    return;
+  }
+  // 원본 배열 안에서 off 하기. unmount
+  if (chooseTagArr.includes(e.target.id) === true) {
+    // console.log(e.target.id);
+    chooseTagArr.splice(chooseTagArr.indexOf(e.target.id), 1);
+    console.log('Tag off');
+  } else if (chooseTagArr.includes(e.target.id) === false) {
+    chooseTagArr.push(e.target.id);
+    console.log('push');
+  }
+
+  showingUpdate();
+
+  return;
+});
