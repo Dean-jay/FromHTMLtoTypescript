@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <title>TypeScript Dom Manipulation</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="input__task">
+        <input type="text" />
+        <button>Add</button>
+      </div>
+      <ul class="tag__lists" id="search__tag">
+        <li class="tag emergency"><p>#Emergency</p></li>
+        <li class="tag next"><p>#Next</p></li>
+        <li class="tag doing"><p>#Doing</p></li>
+        <li class="tag done"><p>#Done</p></li>
+      </ul>
+      <ul id="item__lists">
+        <li class="item emergency next">
+          <p>TypeScript Todo list</p>
+          <ul class="tag__lists" id="item__tag">
+            <li class="tag emergency"><p>#Emergency</p></li>
+            <li class="tag next"><p>#Next</p></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- Assume index.js is the compiled output of index.ts -->
+    <script src="index.js"></script>
+  </body>
+</html>

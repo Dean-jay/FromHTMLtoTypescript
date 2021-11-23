@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.tag__lists {
+  display: flex;
+  list-style: none;
+}
+.tag {
+  margin: 10px;
+  border: 1px solid aquamarine;
+  border-radius: 4px;
+}
+.tag__btn {
+  padding: 4px;
+  cursor: pointer;
+}
+.item {
+  border: 2px solid rebeccapurple;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+.high__light {
+  background-color: aqua;
+}

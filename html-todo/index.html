@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <title>TypeScript Dom Manipulation</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="input__task">
+        <input type="text" id="input__title" placeholder="title" />
+        <input type="text" id="input__task" placeholder="task" />
+        <input type="text" id="input__tag" placeholder="tag" />
+        <button class="add__button">Add</button>
+      </div>
+
+      <!-- tag -->
+      <ul class="tag__lists" id="search__tag">
+        <li class="tag">
+          <p class="tag__btn" id="javascript">#javascript</p>
+        </li>
+        <li class="tag"><p class="tag__btn" id="nodejs">#nodejs</p></li>
+        <li class="tag"><p class="tag__btn" id="typescript">#typescript</p></li>
+        <li class="tag"><p class="tag__btn" id="html">#html</p></li>
+        <li class="tag"><p class="tag__btn" id="go">#go</p></li>
+        <li class="tag"><p class="tag__btn" id="css">#css</p></li>
+        <li class="tag"><p class="tag__btn" id="reactjs">#reactjs</p></li>
+      </ul>
+
+      <!-- itemLists -->
+      <ul id="item__lists">
+        <!-- item -->
+        <!-- <li class="item typescript nodejs">
+          <p class="task__title">TypeScript Todo list</p>
+          <ul class="tag__lists item__tag">
+            <li class="tag typescript"><p>#typescript</p></li>
+            <li class="tag nodejs"><p>#nodejs</p></li>
+          </ul>
+        </li> -->
+      </ul>
+    </div>
+    <!-- Assume index.js is the compiled output of index.ts -->
+    <script src="index.js"></script>
+  </body>
+</html>

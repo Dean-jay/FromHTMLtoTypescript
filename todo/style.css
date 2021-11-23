@@ -1,0 +1,7 @@
+.tag__lists {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style-type: none;
+  cursor: pointer;
+}
