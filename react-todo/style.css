@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.tag__lists {
+  display: flex;
+  list-style: none;
+}
+.tag {
+  margin-right: 10px;
+}

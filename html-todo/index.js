@@ -1,3 +1,4 @@
+const addBtn = document.querySelector('.add__button');
 const data = {
   items: [
     {
@@ -49,14 +50,11 @@ function classToList(classArr) {
   return tagToList;
 }
 
-// Add 버튼을 눌렀을 때 "둘 다" 동작 해야 한다.
 function addItem(title, body, tagArr) {
   const li = document.createElement('li');
 
   // < mkae tag lists 함수화>
   const itemTagLists = classToList(tagArr);
-
-  // !!!!!!!! make hide class !!!!!!!!!
   li.className = ['item', 'hide', ...tagArr].join(' ');
   li.innerHTML = `
 		<p class="task__title">${title}</p>
@@ -70,7 +68,7 @@ function addItem(title, body, tagArr) {
 }
 
 function registData(title, body, tagArr) {
-  // id generate...
+  // !!!!! id generate...!!!!!
   const id = 'uuid' + `${Math.trunc(Math.random() * 1000)}`;
   data.items.push({
     id: id,
@@ -81,47 +79,6 @@ function registData(title, body, tagArr) {
 }
 
 /**
- * Add button
- * 1. click : update to data
- * 2. display: on DOM
- */
-const addBtn = document.querySelector('.add__button');
-addBtn.addEventListener('click', (e) => {
-  // bring value
-  const title = document.querySelector('#input__title').value;
-  const body = document.querySelector('#input__task').value;
-  const tag = document.querySelector('#input__tag').value;
-  const tagArr = tagToClass(tag);
-  // console.log(e);
-  // console.log(title, body, tagArr);
-  addItem(title, body, tagArr);
-  registData(title, body, tagArr);
-
-  // reset
-  document.querySelector('#input__title').value = '';
-  document.querySelector('#input__task').value = '';
-  document.querySelector('#input__tag').value = '';
-
-  showingUpdate();
-  return;
-});
-
-/**
- * Add data : 저장된 data를 DOM으로 가져옴
- * fetching에 가깝다.
- */
-function addingData() {
-  data.items.map((item) => {
-    const title = item.title;
-    const body = item.body;
-    const tagArr = item.tag;
-    addItem(title, body, tagArr);
-    return;
-  });
-}
-addingData();
-
-/**
  * sorting with your tag
  * 내가 몇개를 선택했는지 확인해주는게 더 중요하다. 두번 누르면 리셋.
  * P1. 매 클릭 마다 CSS가 깨지는 현상.
@@ -130,18 +87,12 @@ addingData();
  */
 const chooseTagArr = ['neverKnowFirstTaghaha'];
 
-// [!] first case: 어떻게 하면 없앨 수 있을까? => state 이용.
-if (chooseTagArr.length < 2) {
-  showingAll();
-}
-
 // [!] showing update
 function showingUpdate() {
   if (chooseTagArr.length < 2) {
     showingAll();
     classNameReset('high__light');
   } else if (chooseTagArr.length >= 2) {
-    // console.log(chooseTagArr);
     // reset
     hidingAll();
     classNameReset('high__light');
@@ -192,20 +143,54 @@ function showTagOn(tagArr) {
   });
 }
 function changeTagOn(tagArr) {
-  // const taggingList = document.querySelectorAll(
-  //   tagArr.map((item) => `.${item}`)
-  // );
-
   const tags = document.querySelectorAll(tagArr.map((item) => `#${item}`));
+  console.log(tags);
   // Node list => foreach 사용
   tags.forEach((item) => item.classList.add('high__light'));
-  // taggingList.forEach((item) => {
-  //   item.classList.remove('hide');
-  //   item.classList.add('show');
-  // });
   return;
 }
 
+/**
+ * Add data : 저장된 data를 DOM으로 가져옴
+ * fetching에 가깝다.
+ */
+function addingData() {
+  data.items.map((item) => {
+    const title = item.title;
+    const body = item.body;
+    const tagArr = item.tag;
+    addItem(title, body, tagArr);
+    return;
+  });
+}
+
+addingData();
+// [!] first case: 어떻게 하면 없앨 수 있을까? => state 이용.
+if (chooseTagArr.length < 2) {
+  showingAll();
+}
+/**
+ * Add button & window Event to tag button
+ * 1. click : update to data
+ * 2. display: on DOM
+ */
+addBtn.addEventListener('click', (e) => {
+  const title = document.querySelector('#input__title').value;
+  const body = document.querySelector('#input__task').value;
+  const tag = document.querySelector('#input__tag').value;
+  const tagArr = tagToClass(tag);
+  addItem(title, body, tagArr);
+  registData(title, body, tagArr);
+
+  // reset
+  document.querySelector('#input__title').value = '';
+  document.querySelector('#input__task').value = '';
+  document.querySelector('#input__tag').value = '';
+
+  // update
+  showingUpdate();
+  return;
+});
 document.addEventListener('click', (e) => {
   // console.log(e.target.className);
   if (e.target.className.includes('tag__btn') === false) {
