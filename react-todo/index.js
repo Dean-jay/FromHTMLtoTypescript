@@ -1,3 +1,26 @@
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isToggleOn: true };
+
+    // 콜백에서 `this`가 작동하려면 아래와 같이 바인딩 해주어야 합니다.
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState((prevState) => ({
+      isToggleOn: !prevState.isToggleOn,
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
 const tagLists = [
   { name: 'all', key: '0' },
   { name: 'javascript', key: '1' },
@@ -32,29 +55,7 @@ const data = {
     },
   ],
 };
-class Toggle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { isToggleOn: true };
 
-    // 콜백에서 `this`가 작동하려면 아래와 같이 바인딩 해주어야 합니다.
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.setState((prevState) => ({
-      isToggleOn: !prevState.isToggleOn,
-    }));
-  }
-
-  render() {
-    return (
-      <button onClick={this.handleClick}>
-        {this.state.isToggleOn ? 'ON' : 'OFF'}
-      </button>
-    );
-  }
-}
 function Header(props) {
   function handleSubmit(e) {
     e.preventDefault();
@@ -92,22 +93,24 @@ function Header(props) {
 function Main() {
   return (
     <div>
-      {data.items.map((item) => {
-        return (
-          <li className={['item', ...item.tag]} key={item.title}>
-            <p className='task__title'>{item.title}</p>
-            <ul className='tag__lists item__tag'>
-              {item.tag.map((tag) => {
-                return (
-                  <li className={['tag', tag]} key={tag}>
-                    #{tag}
-                  </li>
-                );
-              })}
-            </ul>
-          </li>
-        );
-      })}
+      <ul id='item__lists'>
+        {data.items.map((item) => {
+          return (
+            <li className={['item', ...item.tag].join(' ')} key={item.title}>
+              <p className='task__title'>{item.title}</p>
+              <ul className='tag__lists item__tag'>
+                {item.tag.map((tag) => {
+                  return (
+                    <li className={['tag', tag].join(' ')} key={tag}>
+                      #{tag}
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
