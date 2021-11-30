@@ -1,0 +1,10 @@
+#tag {
+  cursor: pointer;
+  margin: 5px;
+}
+.on {
+  background-color: dodgerblue;
+}
+ul {
+  display: flex;
+}
